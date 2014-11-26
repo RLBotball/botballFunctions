@@ -1,12 +1,16 @@
 #define RIGHT_MOTOR_PORT 2
 #define LEFT_MOTOR_PORT 0
 #define STANDARD_TURN_SPEED 200
-
+#define PIXELS_TO_DEGREES 1;
+#define CAMERA_WIDTH 160;
 static int unitsPer360Turn = 4700000; //this number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
+static int unitsPerCM = -1;
+
 
 int main(){
 	//printf(VAR+" ");
-	turnLeftDeg(180);
+	testTurnSpeed();
+	turnLeftDeg(180, STANDARD_TURN_SPEED);
 	return(0);
 }
 
@@ -46,7 +50,7 @@ int testTurnSpeed(){ //account for the distance between the wheels, etc. Returns
 	int button = getFirstButtonPressed();
 	if(button == 0){
 		printf("360 degree turn value: %d \n", (currentPosition*4));
-	} else if(button == 1){
+		} else if(button == 1){
 		return testTurnSpeed();
 	} else return -1;
 	
@@ -84,29 +88,83 @@ void turnLeft(int speed, int time){
 }
 
 int findValidObject(){ //find an object for the purpose of tracking. Should not move.
+	camera_open();
+	camera_update();
+}
+
+int goTowardsObject(int channel){
+	int allowance = 10; //tweak
+	int increment = 10; //tweak
+	//do a circle to identify object.
+	//turn back and forth in smaller increments until it's in the middle of the image
+	//go forwards
+	//recurse
+	camera_update();
+	while(areWeThereYet(channel) == 0){
+		AlignWithObject(channel, allowance);
+		goStrightInCM(increment);
+	}
+}
+
+int testPixelsToDegrees(){
 	
+}
+
+void goStraight(int speed, int dist){ //negatives will go backwards, positives forwards. //dist = speed * time; time = dist/speed
+	mav(LEFT_MOTOR_PORT, speed);
+	mav(RIGHT_MOTOR_PORT, speed);
+	msleep(dist/speed); //check this forumula.
+	mav(LEFT_MOTOR_PORT, 0);
+	mav(RIGHT_MOTOR_PORT, 0);
+}
+
+void AlignWithObject(int channel, int allowance){ //recursive implementation (?) of binary search with closerToAlignedWithObject(). Allowance is the required accuracy. 3 will get it to within 3 pixels.
+	//int marginOfError = 64;
+	while(abs(offsetFromObject(channel, 0)) > allowance){
+		moveTowardAlignedWithObject(channel, 0.9);
+	}
+}
+
+void moveTowardAlignedWithObject(int channel, float turnMultiplier, int speed){ //with turnMultiplier set to 0.75, if it expects to need to turn 10 degrees, it will turn 7.5 degrees toward the object.
+	turnDeg((offsetFromObject(channel, 0)*PIXELS_TO_DEGREES*turnMultiplier), speed); //check for bugs with float multiplication.
+	//turn to be aligned.
+}
+
+
+int offsetFromObject(int channel, int index){ //positive = Object to right; negative = Object to left; returns the distance from the center of the camera to the center of the object.
+	point2 objectCenter = get_object_center(channel, 0);
+	int output = -1*(CAMERA_WIDTH-(objectCenter.x)));
+	return output;
 }
 
 void driveStraightWithTracking(int dist){
 	
 }
 
-int moveInCM(int cm){
+int goStrightInCM(int cm){
 	
 }
 
-int turnLeftDeg(int deg){ //perform a turn of deg degrees.
-	if(unitsPer360Turn == -1){printf("ERROR: Define unitsPer360Turn! \n");}
-	else{
-		float percentTurn = (float)deg/360;
-		turnLeft(STANDARD_TURN_SPEED, (unitsPer360Turn*percentTurn)/STANDARD_TURN_SPEED);//unitsPer360Turn:360 as ? : deg
+void turnDeg(int deg, int speed){ //clockWise amount
+	if(deg > 0){
+		turnRight(deg, speed);
+	} else if(deg < 0){
+		turnLeft(deg, speed);
 	}
 }
 
-int turnRightDeg(int deg){
-		if(unitsPer360Turn == -1){printf("ERROR: Define unitsPer360Turn! \n");}
+int turnLeftDeg(int deg, int speed){ //perform a turn of deg degrees.
+	if(unitsPer360Turn == -1){printf("ERROR: Define unitsPer360Turn! \n");}
 	else{
 		float percentTurn = (float)deg/360;
-		turnRight(STANDARD_TURN_SPEED, (unitsPer360Turn*percentTurn)/STANDARD_TURN_SPEED);//unitsPer360Turn:360 as ? : deg
+		turnLeft(speed, (unitsPer360Turn*percentTurn)/speed);//unitsPer360Turn:360 as ? : deg
+	}
+}
+
+int turnRightDeg(int deg, int speed){
+	if(unitsPer360Turn == -1){printf("ERROR: Define unitsPer360Turn! \n");}
+	else{
+		float percentTurn = (float)deg/360;
+		turnRight(speed, (unitsPer360Turn*percentTurn)/speed);//unitsPer360Turn:360 as ? : deg
 	}
 }
