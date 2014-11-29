@@ -148,8 +148,8 @@ void turnDeg(int deg, int speed){ //clockWise amount
 	}
 }
 int alignWithWall(int distanceFromWall, int futureDistanceFromWall){
-	goStraightInCM(distanceFromWall + 50, 100);
-	goStraightInCM(-1 * futureDistanceFromWall, 100);
+	goStraightInCM(distanceFromWall + 50, 400);
+	goStraightInCM(-1 * futureDistanceFromWall, 400);
 
 int alignWithCorner(int distanceX, int distanceY, int futuredistanceX, int futuredistanceY, int direction){
 	//direction us -1 for up, 1 for down
