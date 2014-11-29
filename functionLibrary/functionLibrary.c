@@ -4,6 +4,7 @@
 #define PIXELS_TO_DEGREES 1;
 #define CAMERA_WIDTH 160;
 #define IR_PORT 0
+#define BLACK_LINE_COLOR 700
 static int unitsPer360Turn = -1; //This number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
 static int unitsPerCM = -1;
 
