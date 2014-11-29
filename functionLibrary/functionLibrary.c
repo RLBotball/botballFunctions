@@ -3,14 +3,13 @@
 #define STANDARD_TURN_SPEED 200
 #define PIXELS_TO_DEGREES 1;
 #define CAMERA_WIDTH 160;
-static int unitsPer360Turn = 4700000; //This number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
+static int unitsPer360Turn = -1; //This number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
 static int unitsPerCM = -1;
 
 
 int main(){
 	//printf(VAR+" ");
-	testTurnSpeed();
-	turnLeftDeg(180, STANDARD_TURN_SPEED);
+	testDistPerCM(100);
 	return(0);
 }
 
@@ -71,6 +70,41 @@ int getFirstButtonPressed(){ //returns 0 for A, 1 for B, 2 for C.
 	}
 }
 
+int testDistPerCM(int testDistanceCM){ //one unit is the number of speed*time units per cm. TestDistanceCM is the number of centimenters to use as a test distance.
+	int currentPosition = 0;
+	int FIRST_SPEED = 250; //speed at which for the first portion.
+	int TIMEINTERVAL = 100;
+	printf("Please press A when the Robot has driven past %d CM. \n", testDistanceCM);
+	while(a_button_clicked()==0){ //turn go a bit past testDistanceCM CMs
+		goStraight(FIRST_SPEED, TIMEINTERVAL);
+		currentPosition = currentPosition + (FIRST_SPEED*TIMEINTERVAL);
+	}
+	
+	printf("Moving back a bit. \n");
+	int toMoveBack = currentPosition/10; //move back 1/10 of the distance.
+	printf("%d", toMoveBack);
+	goStraight(-FIRST_SPEED, toMoveBack/FIRST_SPEED);
+	
+	printf("Please press A when the Robot is back at %d CM. \n", testDistanceCM);
+	while(a_button_clicked()==0){ //go back to testDistanceCM at 1/8 original speed.
+		goStraight(FIRST_SPEED/8, TIMEINTERVAL);
+		currentPosition = currentPosition + (FIRST_SPEED/8*TIMEINTERVAL);
+	}
+	
+	printf("Current Value: %d \n Will now back up to beginning. \n", currentPosition);
+	
+	goStraight(-500, currentPosition/500); //Go back to original location at speed 500.
+	
+	printf("Button A: Done \n Button B: Redo \n");
+	int button = getFirstButtonPressed();
+	if(button == 0){
+		printf("Distance units per CM [dist/cm]: %d \n", currentPosition/testDistanceCM);
+		printf("Tested at %d units", testDistanceCM);
+		} else if(button == 1){
+		return testDistPerCM(testDistanceCM);
+	} else return -1;
+}
+
 void turnRight(int speed, int time){
 	mav(RIGHT_MOTOR_PORT, speed);
 	mav(LEFT_MOTOR_PORT, (speed*-1));
@@ -87,16 +121,22 @@ void turnLeft(int speed, int time){
 	mav(LEFT_MOTOR_PORT, 0);
 }
 
-void goStraight(int speed, int dist){ //negatives will go backwards, positives forwards. //dist = speed * time; time = dist/speed
+void goStraight(int speed, int time){ //negatives will go backwards, positives forwards. //dist = speed * time; time = dist/speed
 	mav(LEFT_MOTOR_PORT, speed);
 	mav(RIGHT_MOTOR_PORT, speed);
-	msleep(dist/speed); //check this forumula.
+	msleep(time); //check this forumula.
 	mav(LEFT_MOTOR_PORT, 0);
 	mav(RIGHT_MOTOR_PORT, 0);
 }
 
-int goStrightInCM(int cm){
-	
+int goStrightInCM(int cm, int speed){
+	if(unitsPerCM == -1){
+		printf("Error: Define unitsPerCM");
+	} else {
+		int unitsToDrive = cm*unitsPerCM;
+		goStraight(speed, unitsToDrive/speed);
+	}
+	//total dist units needed to travel
 }
 
 void turnDeg(int deg, int speed){ //clockWise amount
