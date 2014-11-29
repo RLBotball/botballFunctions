@@ -1,8 +1,8 @@
 #define RIGHT_MOTOR_PORT 2
 #define LEFT_MOTOR_PORT 0
 #define STANDARD_TURN_SPEED 200
-#define PIXELS_TO_DEGREES 1;
-#define CAMERA_WIDTH 160;
+#define PIXELS_TO_DEGREES 1
+#define CAMERA_WIDTH 160
 static int unitsPer360Turn = -1; //This number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
 static int unitsPerCM = -1;
 
