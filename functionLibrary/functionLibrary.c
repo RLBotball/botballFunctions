@@ -3,6 +3,7 @@
 #define STANDARD_TURN_SPEED 200
 #define PIXELS_TO_DEGREES 1;
 #define CAMERA_WIDTH 160;
+#define IR_PORT 0
 static int unitsPer360Turn = -1; //This number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
 static int unitsPerCM = -1;
 
@@ -147,8 +148,8 @@ void turnDeg(int deg, int speed){ //clockWise amount
 	}
 }
 int alignWithWall(int distanceFromWall, int futureDistanceFromWall){
-	goStraightInCM(distanceFromWall + 50);
-	goStraightInCM(-1 * futureDistanceFromWall);
+	goStraightInCM(distanceFromWall + 50, 100);
+	goStraightInCM(-1 * futureDistanceFromWall, 100);
 
 int alignWithCorner(int distanceX, int distanceY, int futuredistanceX, int futuredistanceY, int direction){
 	//direction us -1 for up, 1 for down
@@ -156,8 +157,19 @@ int alignWithCorner(int distanceX, int distanceY, int futuredistanceX, int futur
 	turnDeg(90 * direction);
 	alignWithWall(distanceY, futureDistanceY);
 }
-	
+
+int lineFollow(int lineColor, int time){ //if the line is black and sensor is 1 inch away, lineColor is ~700 IIRC
+	for(i = 0, i < time, i++){
+		IRReading = analog(0)
+		if(IRReading < lineColor){
+			turnLeftDeg(1, 20)
+		}
+		else if(IRReading > lineColor){
+			turnRightDeg(1, 20)
+		}
+	}
 }
+
 int turnLeftDeg(int deg, int speed){ //perform a turn of deg degrees.
 	if(unitsPer360Turn == -1){printf("ERROR: Define unitsPer360Turn! \n");}
 	else{
