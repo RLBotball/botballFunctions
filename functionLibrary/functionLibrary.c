@@ -151,22 +151,23 @@ void turnDeg(int deg, int speed){ //clockWise amount
 int alignWithWall(int distanceFromWall, int futureDistanceFromWall){
 	goStraightInCM(distanceFromWall + 50, 400);
 	goStraightInCM(-1 * futureDistanceFromWall, 400);
+}
 
 int alignWithCorner(int distanceX, int distanceY, int futuredistanceX, int futuredistanceY, int direction){
 	//direction us -1 for up, 1 for down
 	alignWithWall(distanceX, futuredistanceX);
-	turnDeg(90 * direction);
-	alignWithWall(distanceY, futureDistanceY);
+	turnDeg(90 * direction, STANDARD_TURN_SPEED);
+	alignWithWall(distanceY, futuredistanceY);
 }
 
 int lineFollow(int lineColor, int time){ //if the line is black and sensor is 1 inch away, lineColor is ~700 IIRC
-	for(i = 0, i < time, i++){
-		IRReading = analog(0)
+	for(int i = 0; i < time; i++){
+		int IRReading = analog(0);
 		if(IRReading < lineColor){
-			turnLeftDeg(1, 20)
+			turnLeftDeg(1, 20);
 		}
 		else if(IRReading > lineColor){
-			turnRightDeg(1, 20)
+			turnRightDeg(1, 20);
 		}
 	}
 }
