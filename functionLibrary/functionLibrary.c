@@ -1,8 +1,8 @@
 #define RIGHT_MOTOR_PORT 2
 #define LEFT_MOTOR_PORT 0
 #define STANDARD_TURN_SPEED 200
-#define PIXELS_TO_DEGREES 1;
-#define CAMERA_WIDTH 160;
+#define PIXELS_TO_DEGREES 1
+#define CAMERA_WIDTH 160
 static int unitsPer360Turn = 4700000; //this number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
 static int unitsPerCM = -1;
 
@@ -88,18 +88,18 @@ void turnLeft(int speed, int time){
 }
 
 int findValidObject(int waitTime){ //find an object for the purpose of tracking. Should not move.
-	int channel = 1 //insert channel here
-	int validTargets = 0 //number of valid targets
+	int channel = 1; //insert channel here
+	int validTargets = 0; //number of valid targets
 	camera_open();
 	camera_update();
-	count = get_object_count(channel);
+	int count = get_object_count(channel);
 	point2 obj_pos_before[count];  //check point2
 	point2 obj_pos_after[count];
-	for (i=0; i<count; i++){
+	for (int i=0; i<count; i++){
 		obj_pos_before[i] = get_object_center(channel, i);
 	}
 	msleep(waitTime);
-	for (i=0; i<count; i++){
+	for (int i=0; i<count; i++){
 		point2 obj_pos_after[i] = get_obj_center(channel, i);
 		if(obj_pos_before[i].x = obj_pos_after.x && obj_pos_before[i].y = obj_pos_after[i].y){
 			printf("Object %d is a valid target\n", i);
@@ -152,7 +152,7 @@ void moveTowardAlignedWithObject(int channel, float turnMultiplier, int speed){ 
 
 int offsetFromObject(int channel){ //positive = Object to right; negative = Object to left; returns the distance from the center of the camera to the center of the object.
 	point2 objectCenter = get_object_center(channel, 0);
-	int output = -1*(CAMERA_WIDTH-(objectCenter.x)));
+	int output = (-1*(CAMERA_WIDTH-(objectCenter.x)));
 	return output;
 }
 
