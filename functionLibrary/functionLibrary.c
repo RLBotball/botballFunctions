@@ -87,26 +87,26 @@ void turnLeft(int speed, int time){
 	mav(LEFT_MOTOR_PORT, 0);
 }
 
+//DO NOT USE.
 int findValidObject(int waitTime){ //find an object for the purpose of tracking. Should not move.
 	int channel = 1; //insert channel here
 	int validTargets = 0; //number of valid targets
 	camera_open();
 	camera_update();
 	int count = get_object_count(channel);
-	point2 obj_pos_before[count];  //check point2
-	point2 obj_pos_after[count];
+	point2 obj_pos_before[count];  //make an array for each possible object. 
+	point2 obj_pos_now[count];
 	for (int i=0; i<count; i++){
 		obj_pos_before[i] = get_object_center(channel, i);
 	}
 	msleep(waitTime);
 	for (int i=0; i<count; i++){
-		point2 obj_pos_after[i] = get_obj_center(channel, i);
-		if(obj_pos_before[i].x = obj_pos_after.x && obj_pos_before[i].y = obj_pos_after[i].y){
-			printf("Object %d is a valid target\n", i);
-			validTargets = validTargets + 1;
-		}
-		if(validTargets = 0){
-			printf("No valid targets");
+		point2 obj_pos_now[i] = get_obj_center(channel, i);
+		if(obj_pos_before[i].x == obj_pos_now[i].x && obj_pos_before[i].y == obj_pos_now[i].y){ //same position as the beginning; still a valid target. if obj_pos_before == -1, it won't be equal anyway. 
+			printf("Object %d is a valid target \n", i);
+			validTargets++;
+		} else {
+			
 		}
 	}
 }
