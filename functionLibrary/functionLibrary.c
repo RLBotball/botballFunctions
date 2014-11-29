@@ -126,9 +126,7 @@ int goTowardsObject(int channel){
 	}
 }
 
-int testPixelsToDegrees(){
-	
-}
+
 
 void goStraight(int speed, int dist){ //negatives will go backwards, positives forwards. //dist = speed * time; time = dist/speed
 	mav(LEFT_MOTOR_PORT, speed);
