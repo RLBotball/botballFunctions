@@ -129,7 +129,7 @@ void goStraight(int speed, int time){ //negatives will go backwards, positives f
 	mav(RIGHT_MOTOR_PORT, 0);
 }
 
-int goStrightInCM(int cm, int speed){
+int goStraightInCM(int cm, int speed){
 	if(unitsPerCM == -1){
 		printf("Error: Define unitsPerCM");
 	} else {
@@ -146,7 +146,18 @@ void turnDeg(int deg, int speed){ //clockWise amount
 		turnLeft(deg, speed);
 	}
 }
+int alignWithWall(int distanceFromWall, int futureDistanceFromWall){
+	goStraightInCM(distanceFromWall + 50);
+	goStraightInCM(-1 * futureDistanceFromWall);
 
+int alignWithCorner(int distanceX, int distanceY, int futuredistanceX, int futuredistanceY, int direction){
+	//direction us -1 for up, 1 for down
+	alignWithWall(distanceX, futuredistanceX);
+	turnDeg(90 * direction);
+	alignWithWall(distanceY, futureDistanceY);
+}
+	
+}
 int turnLeftDeg(int deg, int speed){ //perform a turn of deg degrees.
 	if(unitsPer360Turn == -1){printf("ERROR: Define unitsPer360Turn! \n");}
 	else{
