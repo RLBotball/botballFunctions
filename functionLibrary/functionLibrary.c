@@ -3,6 +3,9 @@
 #define STANDARD_TURN_SPEED 200
 #define PIXELS_TO_DEGREES 1
 #define CAMERA_WIDTH 160
+#define IR_PORT 0
+#define BLACK_LINE_COLOR 700
+
 static int unitsPer360Turn = -1; //This number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
 static int unitsPerCM = -1;
 
@@ -129,7 +132,7 @@ void goStraight(int speed, int time){ //negatives will go backwards, positives f
 	mav(RIGHT_MOTOR_PORT, 0);
 }
 
-int goStrightInCM(int cm, int speed){
+int goStraightInCM(int cm, int speed){
 	if(unitsPerCM == -1){
 		printf("Error: Define unitsPerCM");
 	} else {
@@ -144,6 +147,29 @@ void turnDeg(int deg, int speed){ //clockWise amount
 		turnRight(deg, speed);
 	} else if(deg < 0){
 		turnLeft(deg, speed);
+	}
+}
+int alignWithWall(int distanceFromWall, int futureDistanceFromWall){
+	goStraightInCM(distanceFromWall + 50, 400);
+	goStraightInCM(-1 * futureDistanceFromWall, 400);
+}
+
+int alignWithCorner(int distanceX, int distanceY, int futuredistanceX, int futuredistanceY, int direction){
+	//direction us -1 for up, 1 for down
+	alignWithWall(distanceX, futuredistanceX);
+	turnDeg(90 * direction, STANDARD_TURN_SPEED);
+	alignWithWall(distanceY, futuredistanceY);
+}
+
+int lineFollow(int lineColor, int time){ //if the line is black and sensor is 1 inch away, lineColor is ~700 IIRC
+	for(int i = 0; i < time; i++){
+		int IRReading = analog(0);
+		if(IRReading < lineColor){
+			turnLeftDeg(1, 20);
+		}
+		else if(IRReading > lineColor){
+			turnRightDeg(1, 20);
+		}
 	}
 }
 
