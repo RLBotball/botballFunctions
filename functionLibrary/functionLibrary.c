@@ -70,7 +70,7 @@ int getFirstButtonPressed(){ //returns 0 for A, 1 for B, 2 for C.
 	}
 }
 
-int testDistPerCM(int testDistanceCM){ //one unit is the number of speed*time units per cm. 
+int testDistPerCM(int testDistanceCM){ //one unit is the number of speed*time units per cm. TestDistanceCM is the number of centimenters to use as a test distance.
 	int currentPosition = 0;
 	int FIRST_SPEED = 250; //speed at which for the first portion.
 	int TIMEINTERVAL = 100;
@@ -101,7 +101,7 @@ int testDistPerCM(int testDistanceCM){ //one unit is the number of speed*time un
 		printf("Distance units per CM [dist/cm]: %d \n", currentPosition/testDistanceCM);
 		printf("Tested at %d units", testDistanceCM);
 		} else if(button == 1){
-		return testDistPerCM();
+		return testDistPerCM(testDistanceCM);
 	} else return -1;
 }
 
