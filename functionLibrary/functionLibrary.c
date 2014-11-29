@@ -88,8 +88,28 @@ void turnLeft(int speed, int time){
 }
 
 int findValidObject(){ //find an object for the purpose of tracking. Should not move.
+	int channel = 1 //insert channel here
+	int waitTime = 10000 //time robot waits for object to move
+	int validTargets = 0 //number of valid targets
 	camera_open();
 	camera_update();
+	count = get_object_count(channel);
+	/*point2 obj_pos_before[count];  //check point2
+	point2 obj_pos_after[count];
+	for (i=0; i<count; i++){
+		obj_pos_before[i] = get_object_center(channel, i);
+	}
+	msleep(waitTime)
+	for (i=0; i<count; i++){
+		point2 obj_pos_after[i] = get_obj_center(channel, i);
+		if(obj_pos_before[i].x = obj_pos_after.x && obj_pos_before[i].y = obj_pos_after[i].y){
+			printf("Object %d is a valid target\n", i)
+			validTargets = validTargets + 1
+		}
+		if(validTargets = 0){
+			printf("No valid targets")
+		}
+	}*/
 }
 
 int goTowardsObject(int channel){
