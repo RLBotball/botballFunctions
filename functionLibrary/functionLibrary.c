@@ -150,7 +150,7 @@ void moveTowardAlignedWithObject(int channel, float turnMultiplier, int speed){ 
 }
 
 
-int offsetFromObject(int channel, int index){ //positive = Object to right; negative = Object to left; returns the distance from the center of the camera to the center of the object.
+int offsetFromObject(int channel){ //positive = Object to right; negative = Object to left; returns the distance from the center of the camera to the center of the object.
 	point2 objectCenter = get_object_center(channel, 0);
 	int output = -1*(CAMERA_WIDTH-(objectCenter.x)));
 	return output;
