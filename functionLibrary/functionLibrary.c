@@ -99,15 +99,15 @@ int findValidObject(){ //find an object for the purpose of tracking. Should not 
 	for (i=0; i<count; i++){
 		obj_pos_before[i] = get_object_center(channel, i);
 	}
-	msleep(waitTime)
+	msleep(waitTime);
 	for (i=0; i<count; i++){
 		point2 obj_pos_after[i] = get_obj_center(channel, i);
 		if(obj_pos_before[i].x = obj_pos_after.x && obj_pos_before[i].y = obj_pos_after[i].y){
-			printf("Object %d is a valid target\n", i)
-			validTargets = validTargets + 1
+			printf("Object %d is a valid target\n", i);
+			validTargets = validTargets + 1;
 		}
 		if(validTargets = 0){
-			printf("No valid targets")
+			printf("No valid targets");
 		}
 	}*/
 }
