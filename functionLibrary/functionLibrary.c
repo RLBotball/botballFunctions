@@ -87,76 +87,12 @@ void turnLeft(int speed, int time){
 	mav(LEFT_MOTOR_PORT, 0);
 }
 
-int findValidObject(){ //find an object for the purpose of tracking. Should not move.
-	int channel = 1 //insert channel here
-	int waitTime = 10000 //time robot waits for object to move
-	int validTargets = 0 //number of valid targets
-	camera_open();
-	camera_update();
-	count = get_object_count(channel);
-	/*point2 obj_pos_before[count];  //check point2
-	point2 obj_pos_after[count];
-	for (i=0; i<count; i++){
-		obj_pos_before[i] = get_object_center(channel, i);
-	}
-	msleep(waitTime);
-	for (i=0; i<count; i++){
-		point2 obj_pos_after[i] = get_obj_center(channel, i);
-		if(obj_pos_before[i].x = obj_pos_after.x && obj_pos_before[i].y = obj_pos_after[i].y){
-			printf("Object %d is a valid target\n", i);
-			validTargets = validTargets + 1;
-		}
-		if(validTargets = 0){
-			printf("No valid targets");
-		}
-	}*/
-}
-
-int goTowardsObject(int channel){
-	int allowance = 10; //tweak
-	int increment = 10; //tweak
-	//do a circle to identify object.
-	//turn back and forth in smaller increments until it's in the middle of the image
-	//go forwards
-	//recurse
-	camera_update();
-	while(areWeThereYet(channel) == 0){
-		AlignWithObject(channel, allowance);
-		goStrightInCM(increment);
-	}
-}
-
-
-
 void goStraight(int speed, int dist){ //negatives will go backwards, positives forwards. //dist = speed * time; time = dist/speed
 	mav(LEFT_MOTOR_PORT, speed);
 	mav(RIGHT_MOTOR_PORT, speed);
 	msleep(dist/speed); //check this forumula.
 	mav(LEFT_MOTOR_PORT, 0);
 	mav(RIGHT_MOTOR_PORT, 0);
-}
-
-void AlignWithObject(int channel, int allowance){ //recursive implementation (?) of binary search with closerToAlignedWithObject(). Allowance is the required accuracy. 3 will get it to within 3 pixels.
-	//int marginOfError = 64;
-	while(abs(offsetFromObject(channel, 0)) > allowance){
-		moveTowardAlignedWithObject(channel, 0.9);
-	}
-}
-
-void moveTowardAlignedWithObject(int channel, float turnMultiplier, int speed){ //with turnMultiplier set to 0.75, if it expects to need to turn 10 degrees, it will turn 7.5 degrees toward the object.
-	turnDeg((offsetFromObject(channel, 0)*PIXELS_TO_DEGREES*turnMultiplier), speed); //check for bugs with float multiplication.
-	//turn to be aligned.
-}
-
-
-int offsetFromObject(int channel, int index){ //positive = Object to right; negative = Object to left; returns the distance from the center of the camera to the center of the object.
-	point2 objectCenter = get_object_center(channel, 0);
-	int output = -1*(CAMERA_WIDTH-(objectCenter.x)));
-	return output;
-}
-
-void driveStraightWithTracking(int dist){
-	
 }
 
 int goStrightInCM(int cm){
