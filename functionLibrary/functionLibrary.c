@@ -3,7 +3,7 @@
 #define STANDARD_TURN_SPEED 200
 #define PIXELS_TO_DEGREES 1;
 #define CAMERA_WIDTH 160;
-static int unitsPer360Turn = 4700000; //this number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
+static int unitsPer360Turn = 4700000; //This number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
 static int unitsPerCM = -1;
 
 
