@@ -5,6 +5,7 @@
 #define CAMERA_WIDTH 160
 #define IR_PORT 0
 #define BLACK_LINE_COLOR 700
+#define SERVO_ORIGIN
 
 static int unitsPer360Turn = -1; //This number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
 static int unitsPerCM = -1;
@@ -186,5 +187,25 @@ int turnRightDeg(int deg, int speed){
 	else{
 		float percentTurn = (float)deg/360;
 		turnRight(speed, (unitsPer360Turn*percentTurn)/speed);//unitsPer360Turn:360 as ? : deg
+	}
+}
+int calibrateServo(int servoPort, int servoPosition){ 
+	//use to find the false origin of the servo. Must manually fill in to program.	
+	int isButtonPressed =0;
+	printf("We will now calibrate the servo. Please press button A when the servo is at origin. \n"); //Explain to the n00bs that we are calibrating
+	set_servo_position(servoPort,servoPosition); //set to the relative origin
+	while(isButtonPressed==0){ 
+		set_servo_position(servoPort, servoPosition); //keeps going 
+		servoPosition = servoPosition + 1; //slowly increases after each loop
+		msleep(20); //very short wait
+		if(a_button_clicked()==1){
+			isButtonPressed = 1; //checks if pressed
+		}
+		if(isButtonPressed==1){
+			int falseOrigin = get_servo_position(servoPort); //stores the false origin
+			set_servo_position(servoPort,falseOrigin); //resets to origin
+			printf("The origin of the servo is %d, please set the corresponding part of the array to that. \n", falseOrigin); //tells the n00bs the false origin
+			disable_servos(); //turns off servos
+		}
 	}
 }
