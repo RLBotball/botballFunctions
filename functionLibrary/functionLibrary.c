@@ -167,9 +167,11 @@ int lineFollow(int lineColor, int time){ //if the line is black and sensor is 1 
 		int IRReading = analog(0);
 		if(IRReading < lineColor){
 			turnLeftDeg(1, 20);
+			goStraightInCM(1,200);
 		}
 		else if(IRReading > lineColor){
 			turnRightDeg(1, 20);
+			goStraightInCM(1,200);
 		}
 	}
 }
