@@ -6,6 +6,11 @@
 #define IR_PORT 0
 #define BLACK_LINE_COLOR 700
 #define SERVO_ORIGIN
+//Early initializes all voids for reference in places above them
+void turnLeft();
+void turnRight();
+void goStraight();
+void goStarightInCM();
 
 static int unitsPer360Turn = -1; //This number of units will makes the robot turn 360 degrees. Calculate with testTurnSpeed().
 static int unitsPerCM = -1;
