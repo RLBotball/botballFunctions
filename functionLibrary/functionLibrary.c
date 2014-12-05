@@ -217,3 +217,8 @@ int calibrateServo(int servoPort, int servoPosition){
 		}
 	}
 }
+void servoMoveInAngle(int servoPort, int degrees){ //2047 total steps
+ int degreesInSteps = degrees * 5.6861; //Converts degrees into out of 2047
+ int currentServoPosition = get_servo_position(servoPort); //finds current position
+	set_servo_position(servoPort, currentServoPosition + degreesInSteps); //sets position to its position plus the degreesInSteps
+	}
