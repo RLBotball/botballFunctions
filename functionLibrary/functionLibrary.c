@@ -6,6 +6,7 @@
 #define IR_PORT 0
 #define BLACK_LINE_COLOR 700
 #define SERVO_ORIGIN
+#import "functionLibrary.h"
 //Early initializes all voids for reference in places above them
 void turnLeft(int speed, int time);
 void turnRight(int speed, int time);
