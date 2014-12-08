@@ -21,4 +21,5 @@ int alignWithWall(int distanceFromWall, int futureDistanceFromWall);
 int alignWithCorner(int distanceX, int distanceY, int futuredistanceX, int futuredistanceY, int direction);
 int lineFollow(int lineColor, int time);
 void servoMoveInDegrees(int servoPort, int degrees);
+int calibrateServo(int servoPort, int servoPosition);
 #endif
