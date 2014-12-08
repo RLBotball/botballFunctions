@@ -12,6 +12,6 @@ Steps:
   
   2: Go to Project/Project Settings/Dependencies/Add/ Select the functionLibrary.kissproj
   
-  3: Add '#import "functionLibrary.h" ' to the top of your code
+  3: Add '#import "functionLibrary/functionLibrary.h" ' to the top of your code
   
   4: You can use any of the functions!
